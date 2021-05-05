@@ -32,7 +32,7 @@ public class Main {
     if (pessoas == null || p == null) {
       return false;
     }
-    
+
     for (Pessoa pessoa: pessoas) {
       if(pessoa.nrBI == p.nrBI) {
         return true;
