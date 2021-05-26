@@ -22,7 +22,7 @@ public class ListaPessoasFunctions {
     }
 
     while (current != null) {
-      if(current.value.bI == pessoa.bI) {
+      if(current.value.bI == pessoa.bI && current.value.nome.equals(pessoa.nome) && current.value.nacionalidade.equals(pessoa.nacionalidade)) {
         if (previous == null) {
           pessoas.head = current.next;
 
@@ -114,8 +114,13 @@ public class ListaPessoasFunctions {
 
   static ListaPessoas adicionarPessoa(ListaPessoas pessoas, Pessoa p, int posicao) {
 
-    if (pessoas == null || p == null) {
+    if (p == null) {
       return pessoas;
+    }
+
+    if (pessoas == null) {
+      Node node = new Node(p);
+      return new ListaPessoas(node, node);
     }
 
     int index = 0;
@@ -124,7 +129,17 @@ public class ListaPessoasFunctions {
     Node next = null;
     Node newNode = new Node(p);
 
+    if (current == null) {
+      pessoas.head = newNode;
+      return pessoas;
+    }
+
     while (current != null) {
+      if (current.next == null && index != posicao) {
+        current.next = newNode;
+        return pessoas;
+      }
+
       if (index == posicao) {
         if (previous != null) {
           next = previous.next;
@@ -143,24 +158,31 @@ public class ListaPessoasFunctions {
   }
 
   static ListaPessoas inverterLista(ListaPessoas pessoas) {
+
     if (pessoas == null) {
       return pessoas;
     }
 
-    Node current = pessoas.head;
-    Node previous = null;
-    Node temp = null;
+    ListaPessoas inverted = new ListaPessoas();
 
-    while (current != null) {
-      previous = current;
-      current = current.next;
-      current.next = previous;
+    if (pessoas.head == null) {
+      return inverted;
     }
 
-    temp = pessoas.head;
-    pessoas.head = pessoas.tail;
-    pessoas.tail = temp;
-
-    return pessoas;
+    Node previous = null;
+    Node current = pessoas.head;
+    inverted.tail = new Node(current.value);
+    Node newCurrent = inverted.tail;
+    while (current != null) {
+      Node nextElement = current.next;
+      if (previous != null) {
+        newCurrent.next = new Node(previous.value);
+      }
+      previous = current;
+      current = nextElement;
+      newCurrent = newCurrent.next;
+    }
+    inverted.head = previous;
+    return inverted;
   }
 }
